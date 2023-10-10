@@ -17,9 +17,9 @@ let counter: number = 0;
 const tracker = document.createElement("div");
 tracker.innerHTML = `${counter} messages`;
 
-clickerButton.addEventListener('click', () => {
-    counter = counter + 1;
-    tracker.innerHTML = `${counter} messages`;
+clickerButton.addEventListener("click", () => {
+  counter = counter + 1;
+  tracker.innerHTML = `${counter} messages`;
 });
 
 app.append(header);
