@@ -21,12 +21,18 @@ tracker.innerHTML = `${counter} messages`;
 app.append(tracker);
 
 clickerButton.addEventListener("click", () => {
-  plusOne();
+  plus(1);
 });
 
-setInterval(plusOne, 1000);
+window.requestAnimationFrame(clockPlus);
 
-function plusOne() {
-  counter = counter + 1;
+function plus(num: number) {
+  counter += num;
   tracker.innerHTML = `${counter} messages`;
+}
+
+function clockPlus() {
+  const num: number = 1 / 60;
+  plus(num);
+  window.requestAnimationFrame(clockPlus);
 }
