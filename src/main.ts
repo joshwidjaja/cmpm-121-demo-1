@@ -56,6 +56,6 @@ function buyFor(cost: number) {
 function clockPlus() {
   const num: number = rate / 60;
   plus(num);
-  firstUpgrade.disabled = counter <= firstUpgradeCost;
+  firstUpgrade.disabled = counter < firstUpgradeCost;
   window.requestAnimationFrame(clockPlus);
 }
