@@ -2,7 +2,7 @@ import "./style.css";
 
 const app: HTMLDivElement = document.querySelector("#app")!;
 
-const gameName = "cmpm121 D1";
+const gameName = "e";
 const clickerEmoji = "🤖";
 
 document.title = gameName;
@@ -27,7 +27,7 @@ clickerButton.addEventListener("click", () => {
 });
 
 const firstUpgrade = document.createElement("button");
-const firstUpgradeCost: number = 10;
+let firstUpgradeCost: number = 10;
 let firstUpgradeCount: number = 0;
 firstUpgrade.innerHTML = `🍄 (${firstUpgradeCount})
 Cost: ${firstUpgradeCost}`;
@@ -35,7 +35,7 @@ firstUpgrade.disabled = true;
 app.append(firstUpgrade);
 
 const secondUpgrade = document.createElement("button");
-const secondUpgradeCost: number = 100;
+let secondUpgradeCost: number = 100;
 let secondUpgradeCount: number = 0;
 secondUpgrade.innerHTML = `🐦 (${secondUpgradeCount})
 Cost: ${secondUpgradeCost}`;
@@ -43,7 +43,7 @@ secondUpgrade.disabled = true;
 app.append(secondUpgrade);
 
 const thirdUpgrade = document.createElement("button");
-const thirdUpgradeCost: number = 1000;
+let thirdUpgradeCost: number = 1000;
 let thirdUpgradeCount: number = 0;
 thirdUpgrade.innerHTML = `🔌 (${thirdUpgradeCount})
 Cost: ${thirdUpgradeCost}`;
@@ -53,25 +53,28 @@ app.append(thirdUpgrade);
 firstUpgrade.addEventListener("click", () => {
   buyFor(firstUpgradeCost);
   firstUpgradeCount++;
+  firstUpgradeCost *= 1.15;
   rate += 0.1;
   firstUpgrade.innerHTML = `🍄 (${firstUpgradeCount})
-Cost: ${firstUpgradeCost}`;
+Cost: ${firstUpgradeCost.toFixed(0)}`;
 });
 
 secondUpgrade.addEventListener("click", () => {
   buyFor(secondUpgradeCost);
   secondUpgradeCount++;
+  secondUpgradeCost *= 1.15;
   rate += 2;
   secondUpgrade.innerHTML = `🐦 (${secondUpgradeCount})
-Cost: ${secondUpgradeCost}`;
+Cost: ${secondUpgradeCost.toFixed(0)}`;
 });
 
 thirdUpgrade.addEventListener("click", () => {
   buyFor(thirdUpgradeCost);
   thirdUpgradeCount++;
+  thirdUpgradeCost *= 1.15;
   rate += 50;
   thirdUpgrade.innerHTML = `🔌 (${thirdUpgradeCount})
-Cost: ${thirdUpgradeCost}`;
+Cost: ${thirdUpgradeCost.toFixed(0)}`;
 });
 
 window.requestAnimationFrame(clockPlus);
