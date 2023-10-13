@@ -13,12 +13,50 @@ interface Item {
   cost: number;
   rate: number;
   count: number;
+  description: string;
 }
 
 const availableItems: Item[] = [
-  { emoji: "📄", name: "Flyer", cost: 10, rate: 0.1, count: 0 },
-  { emoji: "🔊", name: "Timed Speaker", cost: 100, rate: 2, count: 0 },
-  { emoji: "👥", name: "Accomplice", cost: 1000, rate: 50, count: 0 },
+  {
+    emoji: "📄",
+    name: "Flyer",
+    cost: 10,
+    rate: 0.1,
+    count: 0,
+    description: "You HAVE seen this meme.",
+  },
+  {
+    emoji: "🔊",
+    name: "Timed Speaker",
+    cost: 100,
+    rate: 2,
+    count: 0,
+    description: "Why bother with cuckoo clocks?",
+  },
+  {
+    emoji: "👥",
+    name: "Accomplice",
+    cost: 1000,
+    rate: 50,
+    count: 0,
+    description: "Because misery loves company.",
+  },
+  {
+    emoji: "👾",
+    name: "Malware",
+    cost: 10000,
+    rate: 200,
+    count: 0,
+    description: "This is not a drill, but it's close enough.",
+  },
+  {
+    emoji: "🧠",
+    name: "Telepathy",
+    cost: 100000,
+    rate: 5000,
+    count: 0,
+    description: "But I don't WANT to cure dementia...",
+  },
 ];
 
 const header = document.createElement("h1");
@@ -58,6 +96,18 @@ updateUpgrade(partner, partnerButton);
 partnerButton.disabled = true;
 app.append(partnerButton);
 
+const malware = availableItems[3];
+const malwareButton = document.createElement("button");
+updateUpgrade(malware, malwareButton);
+malwareButton.disabled = true;
+app.append(malwareButton);
+
+const telepathy = availableItems[4];
+const telepathyButton = document.createElement("button");
+updateUpgrade(telepathy, telepathyButton);
+telepathyButton.disabled = true;
+app.append(telepathyButton);
+
 flyerButton.addEventListener("click", () => {
   buyItem(flyer, flyerButton);
 });
@@ -68,6 +118,14 @@ speakerButton.addEventListener("click", () => {
 
 partnerButton.addEventListener("click", () => {
   buyItem(partner, partnerButton);
+});
+
+malwareButton.addEventListener("click", () => {
+  buyItem(malware, malwareButton);
+});
+
+telepathyButton.addEventListener("click", () => {
+  buyItem(telepathy, telepathyButton);
 });
 
 window.requestAnimationFrame(clockPlus);
@@ -82,7 +140,8 @@ function updateUpgrade(item: Item, button: HTMLButtonElement) {
   button.innerHTML = `${item.emoji} <strong>${item.name}</strong> (${
     item.count
   })
-  <br>Cost: ${item.cost.toFixed(0)}`;
+  <br>Cost: ${item.cost.toFixed(0)}
+  <br><em>${item.description}</em>`;
 }
 
 function buyItem(item: Item, button: HTMLButtonElement) {
@@ -109,6 +168,8 @@ function clockPlus() {
   flyerButton.disabled = counter < flyer.cost;
   speakerButton.disabled = counter < speaker.cost;
   partnerButton.disabled = counter < partner.cost;
+  malwareButton.disabled = counter < malware.cost;
+  telepathyButton.disabled = counter < telepathy.cost;
 
   window.requestAnimationFrame(clockPlus);
 }
