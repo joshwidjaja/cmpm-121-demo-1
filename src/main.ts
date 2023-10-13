@@ -7,6 +7,20 @@ const clickerEmoji = "💬";
 
 document.title = gameName;
 
+interface Item {
+  emoji: string;
+  name: string;
+  cost: number;
+  rate: number;
+  count: number;
+}
+
+const availableItems: Item[] = [
+  { emoji: "📄", name: "Flyer", cost: 10, rate: 0.1, count: 0 },
+  { emoji: "🔊", name: "Timed Speaker", cost: 100, rate: 2, count: 0 },
+  { emoji: "👥", name: "Accomplice", cost: 1000, rate: 50, count: 0 },
+];
+
 const header = document.createElement("h1");
 header.innerHTML = gameName;
 app.append(header);
@@ -26,63 +40,57 @@ clickerButton.addEventListener("click", () => {
   plus(1);
 });
 
-const firstUpgrade = document.createElement("button");
-let firstUpgradeCost: number = 10;
-let firstUpgradeCount: number = 0;
-firstUpgrade.innerHTML = `📄 <strong>Flyer</strong> (${firstUpgradeCount})
-Cost: ${firstUpgradeCost}`;
-firstUpgrade.disabled = true;
-app.append(firstUpgrade);
+const flyer = availableItems[0];
+const flyerButton = document.createElement("button");
+updateUpgrade(flyer, flyerButton);
+flyerButton.disabled = true;
+app.append(flyerButton);
 
-const secondUpgrade = document.createElement("button");
-let secondUpgradeCost: number = 100;
-let secondUpgradeCount: number = 0;
-secondUpgrade.innerHTML = `⏰ <strong>Periodic Announcement</strong> (${secondUpgradeCount})
-Cost: ${secondUpgradeCost}`;
-secondUpgrade.disabled = true;
-app.append(secondUpgrade);
+const speaker = availableItems[1];
+const speakerButton = document.createElement("button");
+updateUpgrade(speaker, speakerButton);
+speakerButton.disabled = true;
+app.append(speakerButton);
 
-const thirdUpgrade = document.createElement("button");
-let thirdUpgradeCost: number = 1000;
-let thirdUpgradeCount: number = 0;
-thirdUpgrade.innerHTML = `👥 <strong>Accomplice</strong> (${thirdUpgradeCount})
-Cost: ${thirdUpgradeCost}`;
-thirdUpgrade.disabled = true;
-app.append(thirdUpgrade);
+const partner = availableItems[2];
+const partnerButton = document.createElement("button");
+updateUpgrade(partner, partnerButton);
+partnerButton.disabled = true;
+app.append(partnerButton);
 
-firstUpgrade.addEventListener("click", () => {
-  buyFor(firstUpgradeCost);
-  firstUpgradeCount++;
-  firstUpgradeCost *= 1.15;
-  rate += 0.1;
-  firstUpgrade.innerHTML = `📄 <strong>Flyer</strong> (${firstUpgradeCount})
-  Cost: ${firstUpgradeCost.toFixed(0)}`;
+flyerButton.addEventListener("click", () => {
+  buyItem(flyer, flyerButton);
 });
 
-secondUpgrade.addEventListener("click", () => {
-  buyFor(secondUpgradeCost);
-  secondUpgradeCount++;
-  secondUpgradeCost *= 1.15;
-  rate += 2;
-  secondUpgrade.innerHTML = `⏰ <strong>Periodic Announcement</strong> (${secondUpgradeCount})
-  Cost: ${secondUpgradeCost.toFixed(0)}`;
+speakerButton.addEventListener("click", () => {
+  buyItem(speaker, speakerButton);
 });
 
-thirdUpgrade.addEventListener("click", () => {
-  buyFor(thirdUpgradeCost);
-  thirdUpgradeCount++;
-  thirdUpgradeCost *= 1.15;
-  rate += 50;
-  thirdUpgrade.innerHTML = `👥 <strong>Accomplice</strong> (${thirdUpgradeCount})
-  Cost: ${thirdUpgradeCost.toFixed(0)}`;
+partnerButton.addEventListener("click", () => {
+  buyItem(partner, partnerButton);
 });
 
 window.requestAnimationFrame(clockPlus);
 
 function updateCounter() {
-  tracker.innerHTML = `${counter.toFixed(0)} losses / ${rate.toFixed(
+  tracker.innerHTML = `${counter.toFixed(0)} losses<br>${rate.toFixed(
     1,
   )} per second`;
+}
+
+function updateUpgrade(item: Item, button: HTMLButtonElement) {
+  button.innerHTML = `${item.emoji} <strong>${item.name}</strong> (${
+    item.count
+  })
+  <br>Cost: ${item.cost.toFixed(0)}`;
+}
+
+function buyItem(item: Item, button: HTMLButtonElement) {
+  buyFor(item.cost);
+  item.count++;
+  item.cost *= 1.15;
+  rate += item.rate;
+  updateUpgrade(item, button);
 }
 
 function plus(num: number) {
@@ -98,9 +106,9 @@ function buyFor(cost: number) {
 function clockPlus() {
   const num: number = rate / 60;
   plus(num);
-  firstUpgrade.disabled = counter < firstUpgradeCost;
-  secondUpgrade.disabled = counter < secondUpgradeCost;
-  thirdUpgrade.disabled = counter < thirdUpgradeCost;
+  flyerButton.disabled = counter < flyer.cost;
+  speakerButton.disabled = counter < speaker.cost;
+  partnerButton.disabled = counter < partner.cost;
 
   window.requestAnimationFrame(clockPlus);
 }
